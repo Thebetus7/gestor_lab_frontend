@@ -10,13 +10,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es">
       <body>
-        <header className="layout-header">
-          <h1>GestorLab</h1>
-          {/* Aquí podríamos mostrar usuario si tenemos contexto global */}
-        </header>
-        <main className="layout-main">
-          {children}
-        </main>
+        {children}
       </body>
     </html>
   );

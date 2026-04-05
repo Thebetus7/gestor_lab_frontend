@@ -10,8 +10,6 @@ export default function DashboardPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Para simplificar, leemos la cookie desde el lado del cliente.
-    // Next.js también permite middleware o SSR, que es más seguro.
     const tokenCookie = document.cookie.split('; ').find(row => row.startsWith('access_token='));
     const token = tokenCookie ? tokenCookie.split('=')[1] : null;
 
@@ -25,38 +23,51 @@ export default function DashboardPage() {
       .catch(err => setError(err.message));
   }, [router]);
 
-  const handleLogout = () => {
-    document.cookie = 'access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    router.push('/login');
-  };
-
   return (
     <div className="container">
-      <div className="card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <h2>Dashboard</h2>
-          <button onClick={handleLogout} className="btn" style={{ width: 'auto', backgroundColor: '#dc2626' }}>
-            Cerrar Sesión
-          </button>
+      <div style={{ marginBottom: 'var(--sp-6)' }}>
+        <h1>Dashboard</h1>
+        <p style={{ color: 'var(--text-secondary)', marginTop: 'var(--sp-2)' }}>
+          Bienvenido al panel de gestión de laboratorios
+        </p>
+      </div>
+
+      {error && <div className="error-msg">{error}</div>}
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--sp-6)' }}>
+        {/* Card de bienvenida */}
+        <div className="card">
+          <h3>👤 Mi Perfil</h3>
+          {profile ? (
+            <div style={{ marginTop: 'var(--sp-4)' }}>
+              <p style={{ fontSize: '0.9375rem' }}>
+                <strong>Usuario:</strong> {profile.username}
+              </p>
+              <p style={{ fontSize: '0.9375rem', marginTop: 'var(--sp-2)' }}>
+                <strong>Roles:</strong>{' '}
+                {profile.roles?.length > 0 ? (
+                  profile.roles.map((role: string) => (
+                    <span key={role} className="badge badge-success" style={{ marginLeft: '4px' }}>
+                      {role}
+                    </span>
+                  ))
+                ) : (
+                  <span className="badge badge-pending">Sin rol</span>
+                )}
+              </p>
+            </div>
+          ) : (
+            <p style={{ color: 'var(--text-muted)', marginTop: 'var(--sp-4)' }}>Cargando perfil...</p>
+          )}
         </div>
 
-        {error && <div className="error-msg">{error}</div>}
-        
-        {profile ? (
-          <div>
-            <p><strong>Bienvenido:</strong> {profile.username}</p>
-            <p><strong>Roles asignados:</strong> {profile.roles?.join(', ') || 'Ninguno'}</p>
-          </div>
-        ) : (
-          <p>Cargando perfil...</p>
-        )}
-      </div>
-      
-      <div className="card" style={{ marginTop: '24px' }}>
-        <h3>Información del Sistema</h3>
-        <p style={{ marginTop: '12px' }}>
-          Este es el área remota protegida. Cualquier otra funcionalidad del proyecto debería agregarse aquí como componentes y módulos separados de Next.js.
-        </p>
+        {/* Card de info */}
+        <div className="card">
+          <h3>📋 Información del Sistema</h3>
+          <p style={{ marginTop: 'var(--sp-4)', color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
+            Este es el panel central de GestorLab. Navega usando el menú superior para gestionar laboratorios, reservas, actividades e incidencias.
+          </p>
+        </div>
       </div>
     </div>
   );
