@@ -1,0 +1,130 @@
+.modalHeader {
+  margin-bottom: var(--sp-6);
+}
+
+.tag {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--on-accent-container);
+  background: var(--accent-container);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--sp-2);
+}
+
+.title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--on-surface);
+  letter-spacing: -0.03em;
+}
+
+/* === Dos columnas === */
+.columns {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--sp-6);
+}
+
+@media (max-width: 640px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*  Columna izquierda */
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Columna derecha */
+.rightCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.tasksHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-4);
+}
+
+.tasksTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--on-surface);
+}
+
+.taskCount {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--on-surface-variant);
+  background: var(--surface-container);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+/* Lista de tareas */
+.taskList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.taskRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.taskInputWrapper {
+  flex: 1;
+}
+
+/* Input punteado para el nuevo vacío al final */
+.taskInputDashed {
+  background: var(--surface-container-high) !important;
+  font-style: italic;
+}
+
+.taskDeleteBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--outline);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.taskDeleteBtn:hover {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+}
+
+.taskDeleteHidden {
+  opacity: 0;
+  pointer-events: none;
+}

@@ -1,72 +1,54 @@
-import { API_URL } from './auth';
-
 /**
- * Obtener actividades
+ * lib/api/laboratorio.ts
+ * Funciones de API para el módulo de Laboratorio.
+ * Usa el api-client centralizado (sin manejar tokens manualmente).
  */
-export async function getActividades(token: string) {
-  const res = await fetch(`${API_URL}/laboratorio/actividades/`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-  if (!res.ok) throw new Error('Error al obtener actividades');
-  return res.json();
+
+import { apiGet, apiPost, apiPatch, apiDelete } from '@/lib/api-client';
+
+// ───── Tipos ─────────────────────────────────────────────────────────────────
+
+export interface ActividadTarea {
+  id: number;
+  id_activ: number;
+  id_tarea: number;
+  tarea_descripcion: string;
+  observacion: string | null;
+  estado: 'espera' | 'realizado' | 'problema';
 }
 
-/**
- * Ver el detalle de una actividad (incluye sus tareas y estados)
- */
-export async function getActividadDetail(token: string, id: number) {
-  const res = await fetch(`${API_URL}/laboratorio/actividades/${id}/`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-  if (!res.ok) throw new Error('Error al obtener detalle de actividad');
-  return res.json();
+export interface ActividadList {
+  id: number;
+  descripcion: string | null;
+  is_active: boolean;
 }
 
-/**
- * Crear actividad con tareas (array de strings)
- */
-export async function createActividad(token: string, payload: { descripcion?: string; tiempo?: string; tareas: string[] }) {
-  const res = await fetch(`${API_URL}/laboratorio/actividades/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify(payload)
-  });
-  if (!res.ok) throw new Error('Error al crear actividad');
-  return res.json();
+export interface ActividadDetail extends ActividadList {
+  actividad_tareas: ActividadTarea[];
 }
 
-/**
- * Soft delete de actividad
- */
-export async function deleteActividad(token: string, id: number) {
-  const res = await fetch(`${API_URL}/laboratorio/actividades/${id}/`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-  if (!res.ok) throw new Error('Error al eliminar actividad');
+export interface CreateActividadPayload {
+  descripcion?: string;
+  tareas: string[];
 }
 
-/**
- * Actualizar estado u observación de una Tarea (ActividadTarea)
- */
-export async function updateActividadTarea(token: string, id: number, payload: { estado?: string; observacion?: string }) {
-  const res = await fetch(`${API_URL}/laboratorio/actividad-tareas/${id}/`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify(payload)
-  });
-  if (!res.ok) throw new Error('Error al actualizar tarea');
-  return res.json();
-}
+// ───── Actividades ───────────────────────────────────────────────────────────
+
+export const getActividades = () =>
+  apiGet<ActividadList[]>('/laboratorio/actividades/');
+
+export const getActividadDetail = (id: number) =>
+  apiGet<ActividadDetail>(`/laboratorio/actividades/${id}/`);
+
+export const createActividad = (payload: CreateActividadPayload) =>
+  apiPost<ActividadDetail>('/laboratorio/actividades/', payload);
+
+export const deleteActividad = (id: number) =>
+  apiDelete(`/laboratorio/actividades/${id}/`);
+
+// ───── Tareas (ActividadTarea) ───────────────────────────────────────────────
+
+export const updateActividadTarea = (
+  id: number,
+  payload: { estado?: string; observacion?: string }
+) => apiPatch<ActividadTarea>(`/laboratorio/actividad-tareas/${id}/`, payload);

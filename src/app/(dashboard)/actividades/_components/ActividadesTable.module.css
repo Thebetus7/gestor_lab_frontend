@@ -1,0 +1,62 @@
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.id {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  font-variant-numeric: tabular-nums;
+}
+
+.descripcion {
+  font-size: 0.9375rem;
+  color: var(--on-surface);
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+}
+
+.btnShow {
+  color: var(--accent);
+}
+.btnShow:hover {
+  background: var(--accent-container) !important;
+  color: var(--on-accent-container);
+}
+
+.btnDelete {
+  color: var(--on-surface-variant);
+}
+.btnDelete:hover {
+  background: var(--danger-bg) !important;
+  color: var(--danger-text);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-12);
+  color: var(--on-surface-variant);
+  text-align: center;
+}
+
+.empty p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.empty span {
+  font-size: 0.875rem;
+  color: var(--on-surface-variant);
+}
