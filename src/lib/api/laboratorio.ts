@@ -30,6 +30,7 @@ export interface ActividadDetail extends ActividadList {
 export interface CreateActividadPayload {
   descripcion?: string;
   tareas: string[];
+  laboratorios?: number[];
 }
 
 // ───── Actividades ───────────────────────────────────────────────────────────

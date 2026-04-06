@@ -1,3 +1,4 @@
+/* ─── Encabezado del modal ─── */
 .modalHeader {
   margin-bottom: var(--sp-6);
 }
@@ -17,38 +18,127 @@
 
 .title {
   font-family: 'Manrope', sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 700;
   color: var(--on-surface);
   letter-spacing: -0.03em;
 }
 
-/* === Dos columnas === */
+/* ─── Grid dos columnas ─── */
 .columns {
   display: grid;
   grid-template-columns: 5fr 7fr;
   gap: var(--sp-6);
+  align-items: start;
 }
 
 @media (max-width: 640px) {
-  .columns {
-    grid-template-columns: 1fr;
-  }
+  .columns { grid-template-columns: 1fr; }
 }
 
-/*  Columna izquierda */
+/* ─── Columna izquierda ─── */
 .leftCol {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-4);
+  gap: var(--sp-5);
 }
 
-.fieldGroup {
+.fieldBlock {
   display: flex;
   flex-direction: column;
+  gap: var(--sp-2);
 }
 
-/* Columna derecha */
+.fieldLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--on-surface-variant);
+}
+
+.textarea {
+  min-height: 100px;
+  resize: none;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+/* ─── Laboratorios pills ─── */
+.pillsSelected {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 12px;
+  background: var(--primary-container);
+  color: var(--inverse-primary);
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: 'Manrope', sans-serif;
+}
+
+.pillRemove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--inverse-primary);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  transition: background 0.15s;
+  padding: 0;
+}
+
+.pillRemove:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.labOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.labOption {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: 'Manrope', sans-serif;
+  padding: 5px 12px;
+  border: 1.5px dashed var(--outline-variant);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.labOption:hover {
+  border-color: var(--accent);
+  background: var(--accent-container);
+  color: var(--on-accent-container);
+  border-style: solid;
+}
+
+.allSelected {
+  font-size: 0.8125rem;
+  color: var(--success);
+  font-weight: 500;
+}
+
+/* ─── Columna derecha: Tareas ─── */
 .rightCol {
   display: flex;
   flex-direction: column;
@@ -58,11 +148,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--sp-4);
+  margin-bottom: var(--sp-3);
 }
 
 .tasksTitle {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -78,14 +168,13 @@
   border-radius: var(--radius-full);
 }
 
-/* Lista de tareas */
 .taskList {
   display: flex;
   flex-direction: column;
   gap: var(--sp-2);
-  max-height: 320px;
+  max-height: 340px;
   overflow-y: auto;
-  padding-right: 4px;
+  padding-right: 2px;
 }
 
 .taskRow {
@@ -94,29 +183,32 @@
   gap: var(--sp-2);
 }
 
-.taskInputWrapper {
+.taskInput {
   flex: 1;
+  font-size: 0.9375rem;
+  padding: 10px 14px;
 }
 
-/* Input punteado para el nuevo vacío al final */
-.taskInputDashed {
-  background: var(--surface-container-high) !important;
+/* Input vacío al final (estilo punteado) */
+.taskInputEmpty {
+  background: var(--surface-container) !important;
   font-style: italic;
+  color: var(--outline) !important;
 }
 
 .taskDeleteBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
   border: none;
   border-radius: var(--radius-md);
   background: transparent;
   color: var(--outline);
   cursor: pointer;
   transition: all 0.15s ease;
-  flex-shrink: 0;
 }
 
 .taskDeleteBtn:hover {
