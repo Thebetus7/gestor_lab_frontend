@@ -1,5 +1,6 @@
-import './globals.css';
+﻿import './globals.css';
 import { ReactNode } from 'react';
+import Navbar from '@/components/layout/Navbar';
 
 export const metadata = {
   title: 'GestorLab',
@@ -9,9 +10,13 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es">
-      <body>
-        {children}
+      <body style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-page)' }}>
+        <Navbar />
+        <main style={{ flex: 1 }}>
+          {children}
+        </main>
       </body>
     </html>
   );
 }
+

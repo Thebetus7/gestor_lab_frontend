@@ -1,56 +1,58 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { login } from '@/lib/api/auth';
+import { register, login } from '@/lib/api/auth';
+import Link from 'next/link';
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  
   const router = useRouter();
 
-  // Redirigir si ya está autenticado
-  useEffect(() => {
-    const match = document.cookie.match(/(^| )access_token=([^;]+)/);
-    if (match && match[2]) {
-      router.push('/');
-    }
-  }, [router]);
-
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setSuccess('');
+
+    // Frontend UX Validation
+    if (password !== confirmPassword) {
+      setError('Las contraseñas no coinciden.');
+      setLoading(false);
+      return;
+    }
 
     try {
-      const data = await login(username, password);
-      // Guardar token en cookie
-      document.cookie = `access_token=${data.access}; path=/; max-age=86400`;
-      router.push('/');
-    } catch (err: any) {
-      console.error('Login error:', err);
+      // 1. Registramos al usuario (el backend devuelve mensaje, no token)
+      await register(username, email, password);
       
-      // Intentamos obtener el mensaje detallado del backend si existe
-      // DRF suele enviar { detail: "mensaje" }
-      const backendMessage = err.response?.data?.detail || err.detail;
+      // 2. Si el registro fue exitoso, redirigimos al login
+      setSuccess('¡Cuenta creada con éxito! Redirigiendo al login...');
+      
+      // 3. Redirigir al login (ruta /login) después de un breve delay
+      setTimeout(() => {
+        router.push('/login');
+      }, 1500);
+    } catch (err: any) {
+      console.error('Register error:', err);
+      // Prioridad a mensajes del backend
+      const backendMessage = err.response?.data?.detail || err.detail || err.message;
       
       if (backendMessage) {
         setError(backendMessage);
+      } else if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
+        setError('No se pudo conectar con el servidor. Verifica que el backend esté corriendo.');
       } else {
-        // Mapeo de respaldo según la skill frontend-ux-feedback
-        const errorMsg = err.message?.toLowerCase() || '';
-        if (errorMsg.includes('failed to fetch')) {
-          setError('No se pudo conectar al servidor. Revisa tu conexión a internet.');
-        } else if (err.status === 401 || errorMsg.includes('401') || errorMsg.includes('unauthorized')) {
-          setError('Usuario o contraseña incorrectos.');
-        } else if (err.status === 500 || errorMsg.includes('500')) {
-          setError('Ocurrió un problema en nuestros servidores.');
-        } else {
-          setError('Ocurrió un error inesperado.');
-        }
+        setError('Ocurrió un error inesperado al intentar registrarse.');
       }
     } finally {
       setLoading(false);
@@ -60,29 +62,21 @@ export default function LoginPage() {
   return (
     <div
       style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         background: 'var(--bg-page)',
-        padding: 'var(--sp-4)',
+        padding: 'var(--sp-8) var(--sp-4)',
       }}
     >
       <div style={{ width: '100%', maxWidth: '400px' }}>
-        {/* Branding */}
-        <div style={{ textAlign: 'center', marginBottom: 'var(--sp-8)' }}>
-          <h1 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--primary)' }}>
-            GestorLab
-          </h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: 'var(--sp-2)', fontSize: '0.9375rem' }}>
-            Sistema de Gestión de Laboratorios
-          </p>
-        </div>
-
         <div className="card" style={{ padding: 'var(--sp-8) var(--sp-6)' }}>
-          <h2 style={{ marginBottom: 'var(--sp-6)', textAlign: 'center' }}>
-            Iniciar Sesión
+          <h2 style={{ marginBottom: 'var(--sp-2)', textAlign: 'center' }}>
+            Crear una cuenta
           </h2>
+          <p style={{ color: 'var(--text-secondary)', textAlign: 'center', marginBottom: 'var(--sp-6)', fontSize: '0.9375rem' }}>
+            Regístrate para comenzar a usar GestorLab
+          </p>
 
           {/* Mensaje de Error (UX Feedback) */}
           {error && (
@@ -101,25 +95,55 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onKeyDown={(e) => { if (e.key === 'Enter') handleLogin(e); }}>
+          {/* Mensaje de Éxito (UX Feedback) */}
+          {success && (
+            <div style={{ 
+              background: 'rgba(16, 185, 129, 0.1)', 
+              color: '#059669', 
+              padding: 'var(--sp-3)', 
+              borderRadius: 'var(--radius-md)', 
+              marginBottom: 'var(--sp-4)', 
+              fontSize: '0.875rem',
+              border: '1px solid rgba(16, 185, 129, 0.2)',
+              textAlign: 'center',
+              fontWeight: 500
+            }}>
+              {success}
+            </div>
+          )}
+
+          <form onKeyDown={(e) => { if (e.key === 'Enter') handleRegister(e); }}>
             <div className="form-group">
-              <label>Usuario o Correo Electrónico</label>
+              <label>Usuario</label>
               <input
                 type="text"
                 className="form-input"
-                placeholder="Ingresa tu usuario o correo"
+                placeholder="Elige un nombre de usuario"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
+            
+            <div className="form-group">
+              <label>Correo Electrónico</label>
+              <input
+                type="email"
+                className="form-input"
+                placeholder="tu@correo.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
             <div className="form-group">
               <label>Contraseña</label>
               <div style={{ position: 'relative' }}>
                 <input
                   type={showPassword ? "text" : "password"}
                   className="form-input"
-                  placeholder="Ingresa tu contraseña"
+                  placeholder="Crea una contraseña segura"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -142,7 +166,6 @@ export default function LoginPage() {
                     padding: '4px',
                     color: 'var(--text-secondary)'
                   }}
-                  aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                 >
                   {showPassword ? (
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -158,16 +181,33 @@ export default function LoginPage() {
                 </button>
               </div>
             </div>
+
+            <div className="form-group">
+              <label>Confirmar Contraseña</label>
+              <input
+                type={showPassword ? "text" : "password"}
+                className="form-input"
+                placeholder="Vuelve a escribir la contraseña"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+
             <button
               type="button"
-              onClick={handleLogin}
+              onClick={handleRegister}
               className="btn btn-primary btn-full"
               disabled={loading}
-              style={{ marginTop: 'var(--sp-2)', height: '44px' }}
+              style={{ marginTop: 'var(--sp-4)', height: '44px' }}
             >
-              {loading ? 'Ingresando...' : 'Entrar'}
+              {loading ? 'Registrando...' : 'Registrarse'}
             </button>
           </form>
+
+          <p style={{ marginTop: 'var(--sp-6)', textAlign: 'center', fontSize: '0.9375rem', color: 'var(--text-secondary)' }}>
+            ¿Ya tienes una cuenta? <Link href="/login" style={{ color: 'var(--primary)', fontWeight: 500, textDecoration: 'none' }}>Inicia sesión aquí</Link>
+          </p>
         </div>
       </div>
     </div>
