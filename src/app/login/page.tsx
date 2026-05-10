@@ -1,29 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login } from '@/lib/api/auth';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // Redirigir si ya está autenticado
-  useEffect(() => {
-    const match = document.cookie.match(/(^| )access_token=([^;]+)/);
-    if (match && match[2]) {
-      router.push('/');
-    }
-  }, [router]);
-
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setLoading(true);
-    setError('');
+    setError(null);
 
     try {
       const data = await login(username, password);
@@ -34,13 +26,11 @@ export default function LoginPage() {
       console.error('Login error:', err);
       
       // Intentamos obtener el mensaje detallado del backend si existe
-      // DRF suele enviar { detail: "mensaje" }
       const backendMessage = err.response?.data?.detail || err.detail;
       
       if (backendMessage) {
         setError(backendMessage);
       } else {
-        // Mapeo de respaldo según la skill frontend-ux-feedback
         const errorMsg = err.message?.toLowerCase() || '';
         if (errorMsg.includes('failed to fetch')) {
           setError('No se pudo conectar al servidor. Revisa tu conexión a internet.');
@@ -101,7 +91,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onKeyDown={(e) => { if (e.key === 'Enter') handleLogin(e); }}>
+          <form onKeyDown={(e) => { if (e.key === 'Enter') handleLogin(e as any); }}>
             <div className="form-group">
               <label>Usuario o Correo Electrónico</label>
               <input
@@ -160,7 +150,7 @@ export default function LoginPage() {
             </div>
             <button
               type="button"
-              onClick={handleLogin}
+              onClick={() => handleLogin(null as any)}
               className="btn btn-primary btn-full"
               disabled={loading}
               style={{ marginTop: 'var(--sp-2)', height: '44px' }}

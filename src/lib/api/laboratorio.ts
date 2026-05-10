@@ -53,3 +53,34 @@ export const updateActividadTarea = (
   id: number,
   payload: { estado?: string; observacion?: string }
 ) => apiPatch<ActividadTarea>(`/laboratorio/actividad-tareas/${id}/`, payload);
+
+// ───── Laboratorios ──────────────────────────────────────────────────────────
+
+export interface Laboratorio {
+  id: number;
+  nombre: string | null;
+  capacidad: string | null;
+  filas: number;
+  columnas: number;
+  maquinas_count: number;
+}
+
+export interface CreateLaboratorioPayload {
+  nombre?: string;
+  capacidad?: string;
+  filas: number;
+  columnas: number;
+  maquinas_count: number;
+}
+
+export const getLaboratorios = () =>
+  apiGet<Laboratorio[]>('/laboratorio/laboratorios/');
+
+export const getLaboratorioDetail = (id: number) =>
+  apiGet<Laboratorio>(`/laboratorio/laboratorios/${id}/`);
+
+export const createLaboratorio = (payload: CreateLaboratorioPayload) =>
+  apiPost<Laboratorio>('/laboratorio/laboratorios/', payload);
+
+export const deleteLaboratorio = (id: number) =>
+  apiDelete(`/laboratorio/laboratorios/${id}/`);
