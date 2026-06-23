@@ -3,7 +3,9 @@
  * Funciones de autenticación.
  */
 
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+import { API_BASE } from '../api-client';
+
+export const API_URL = API_BASE;
 
 export async function login(username: string, password: string) {
   const res = await fetch(`${API_URL}/usuarios/login/`, {

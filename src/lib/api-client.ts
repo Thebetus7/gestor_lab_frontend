@@ -4,7 +4,7 @@
  * Todas las llamadas al backend deben pasar por aquí.
  */
 
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://18.221.224.13/api';
 
 /** Lee el access_token de las cookies del browser */
 function getTokenFromCookies(): string | null {

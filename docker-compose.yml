@@ -1,0 +1,11 @@
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        # IP pública del backend AWS — puerto 80, SIN :8000, CON /api al final
+        - NEXT_PUBLIC_API_URL=http://18.221.224.13/api
+    container_name: gestorlab_frontend
+    restart: always
+    ports:
+      - "80:3000"
