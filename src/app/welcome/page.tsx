@@ -149,7 +149,7 @@ export default function WelcomePage() {
             onMouseOut={(e) => e.currentTarget.style.transform = 'perspective(1000px) rotateY(-8deg) rotateX(6deg) rotateZ(-1deg)'}
             >
               <img 
-                src="https://images.unsplash.com/photo-1532187643603-ba119ca4109e?q=80&w=800&auto=format&fit=crop" 
+                src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800&auto=format&fit=crop" 
                 alt="GestorLab Workflow Showcase"
                 style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-xl)', display: 'block' }}
               />
@@ -276,27 +276,27 @@ export default function WelcomePage() {
 const features = [
   {
     title: 'Laboratorios y Equipos',
-    description: 'Inventario en tiempo real. Conoce la disponibilidad y estado de cada equipo en tus laboratorios.',
-    image: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?q=80&w=800&auto=format&fit=crop'
+    description: 'Inventario en tiempo real. Conoce la disponibilidad y estado de computadoras, servidores y hardware en tus laboratorios de sistemas.',
+    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800&auto=format&fit=crop'
   },
   {
     title: 'Reservas Inteligentes',
-    description: 'Sistema de programación sin conflictos para optimizar la utilización de los espacios de trabajo.',
-    image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=800&auto=format&fit=crop'
+    description: 'Sistema de programación sin conflictos para reservar computadoras, mesas de trabajo y laboratorios de computación.',
+    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop'
   },
   {
     title: 'Seguimiento de Actividades',
-    description: 'Controla el flujo de trabajo, asigna tareas y verifica el cumplimiento de protocolos.',
-    image: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=800&auto=format&fit=crop'
+    description: 'Controla flujos de prácticas, asigna laboratorios de código y lleva registro de las materias y software de desarrollo requeridos.',
+    image: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=800&auto=format&fit=crop'
   },
   {
     title: 'Reporte de Incidencias',
-    description: 'Notifica y haz seguimiento a equipos dañados o problemas estructurales de manera inmediata.',
-    image: 'https://images.unsplash.com/photo-1590086782957-93c06ef21604?q=80&w=800&auto=format&fit=crop'
+    description: 'Notifica fallas de red, problemas de software, hardware inoperativo o computadoras dañadas de forma inmediata.',
+    image: 'https://images.unsplash.com/photo-1597839219216-a773cb2473e4?q=80&w=800&auto=format&fit=crop'
   },
   {
     title: 'Gestión de Personal',
-    description: 'Administra accesos, roles y permisos para estudiantes, docentes y técnicos.',
+    description: 'Administra accesos de red, roles y permisos para alumnos de ingeniería, docentes y auxiliares de laboratorio.',
     image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop'
   }
 ];

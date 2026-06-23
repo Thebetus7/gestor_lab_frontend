@@ -105,7 +105,7 @@ export default function Navbar() {
         <span></span>
       </button>
 
-      <Link href="/" className={styles.logo}>
+      <Link href={isAuthenticated ? "/" : "/welcome"} className={styles.logo}>
         GestorLab
       </Link>
       
