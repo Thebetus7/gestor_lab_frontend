@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { fetchProfile } from '@/lib/api/auth';
+import { getActividades, type ActividadList } from '@/lib/api/laboratorio';
 import styles from './Navbar.module.css';
 
 interface NavItem {
@@ -23,6 +24,7 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const [profile, setProfile] = useState<any>(null);
+  const [actividades, setActividades] = useState<ActividadList[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -37,10 +39,19 @@ export default function Navbar() {
       fetchProfile(token)
         .then((data) => setProfile(data))
         .catch(() => setProfile(null));
-    }
-  }, []);
 
-  // Close dropdown on click outside
+      // Cargar actividades para la visualización del Navbar
+      getActividades()
+        .then((data) => {
+          setActividades(data);
+        })
+        .catch((err) => {
+          console.error('Error al cargar actividades en Navbar', err);
+        });
+    }
+  }, [pathname]); // Sincronizar y refrescar al navegar
+
+  // Cerrar el dropdown al hacer clic fuera
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -62,7 +73,7 @@ export default function Navbar() {
 
   return (
     <nav className={styles.navbar}>
-      {/* Hamburger (mobile) */}
+      {/* Hamburguesa (mobile) */}
       <button
         className={styles.hamburger}
         onClick={() => setMobileOpen(!mobileOpen)}
@@ -78,21 +89,75 @@ export default function Navbar() {
         GestorLab
       </Link>
 
-      {/* Nav links */}
+      {/* Enlaces de Navegación */}
       <div className={`${styles.navLinks} ${mobileOpen ? styles.navLinksOpen : ''}`}>
-        {navItems.map((item) => (
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          
+          if (item.label === 'Actividades') {
+            return (
+              <div key={item.href} className={styles.navLinkContainer}>
+                <Link
+                  href={item.href}
+                  className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {item.label}
+                  {actividades.length > 0 && (
+                    <span className={styles.badge}>{actividades.length}</span>
+                  )}
+                </Link>
+
+                {/* Popover de Actividades Recientes */}
+                {actividades.length > 0 && (
+                  <div className={styles.activitiesPopover}>
+                    <div className={styles.popoverHeader}>Actividades Recientes</div>
+                    <div className={styles.popoverList}>
+                      {actividades.slice(0, 4).map((act) => (
+                        <div key={act.id} className={styles.popoverItem}>
+                          <div className={styles.popoverIcon}>📄</div>
+                          <div className={styles.popoverContent}>
+                            <div className={styles.popoverTitle}>Actividad #{act.id}</div>
+                            <div className={styles.popoverDesc}>
+                              {act.descripcion || 'Sin descripción detallada registrada'}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <Link href="/dashboard/actividades" className={styles.popoverFooter}>
+                      Ver todas las actividades →
+                    </Link>
+                  </div>
+                )}
+              </div>
+            );
+          }
+
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
+              onClick={() => setMobileOpen(false)}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+
+        {profile?.roles?.includes('admin') && (
           <Link
-            key={item.href}
-            href={item.href}
-            className={`${styles.navLink} ${pathname === item.href ? styles.navLinkActive : ''}`}
+            href="/dashboard/usuarios"
+            className={`${styles.navLink} ${pathname === '/dashboard/usuarios' ? styles.navLinkActive : ''}`}
             onClick={() => setMobileOpen(false)}
           >
-            {item.label}
+            Gestión de Usuarios
           </Link>
-        ))}
+        )}
       </div>
 
-      {/* User area */}
+      {/* Área del Usuario */}
       <div className={styles.userArea} ref={dropdownRef}>
         <button
           className={styles.userButton}

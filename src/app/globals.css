@@ -378,6 +378,11 @@ h3 { font-size: 1.125rem; line-height: 1.4; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ===== Dividers ===== */
 .divider {
   border: none;

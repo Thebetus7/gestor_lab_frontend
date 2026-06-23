@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { getLaboratorios, createLaboratorio, deleteLaboratorio, type Laboratorio, type CreateLaboratorioPayload } from '@/lib/api/laboratorio';
+import { getLaboratorios, createLaboratorio, updateLaboratorio, deleteLaboratorio, type Laboratorio, type CreateLaboratorioPayload } from '@/lib/api/laboratorio';
 
 export function useLaboratorios() {
   const [laboratorios, setLaboratorios] = useState<Laboratorio[]>([]);
@@ -34,6 +34,17 @@ export function useLaboratorios() {
     }
   };
 
+  const editar = async (id: number, payload: CreateLaboratorioPayload) => {
+    try {
+      const actualizado = await updateLaboratorio(id, payload);
+      setLaboratorios(prev => prev.map(l => l.id === id ? actualizado : l));
+      return actualizado;
+    } catch (err: any) {
+      alert('Error al editar laboratorio.');
+      throw err;
+    }
+  };
+
   const eliminar = async (id: number) => {
     try {
       await deleteLaboratorio(id);
@@ -43,5 +54,5 @@ export function useLaboratorios() {
     }
   };
 
-  return { laboratorios, loading, error, crear, eliminar, cargar };
+  return { laboratorios, loading, error, crear, editar, eliminar, cargar };
 }

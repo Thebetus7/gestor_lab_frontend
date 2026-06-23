@@ -1,4 +1,4 @@
-﻿import './globals.css';
+import './globals.css';
 import { ReactNode } from 'react';
 import Navbar from '@/components/layout/Navbar';
 
@@ -12,7 +12,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="es">
       <body style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-page)' }}>
         <Navbar />
-        <main style={{ flex: 1 }}>
+        <main className="layout-main" style={{ flex: 1 }}>
           {children}
         </main>
       </body>

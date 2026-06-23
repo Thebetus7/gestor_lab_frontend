@@ -1,0 +1,318 @@
+/* ─── Encabezado del modal ─── */
+.modalHeader {
+  margin-bottom: var(--sp-5);
+}
+
+.tag {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--on-accent-container);
+  background: var(--accent-container);
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--sp-2);
+}
+
+.title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--on-surface);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+/* ─── Grid simétrico 1.1fr 1fr bien dimensionado ─── */
+.columns {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--sp-6);
+  align-items: start;
+  min-height: 380px;
+}
+
+@media (max-width: 768px) {
+  .columns { 
+    grid-template-columns: 1fr; 
+    gap: var(--sp-4);
+  }
+}
+
+/* ─── Columna izquierda ─── */
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.fieldBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.fieldLabel {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--on-surface-variant);
+}
+
+.textarea {
+  min-height: 120px;
+  max-height: 160px;
+  resize: none;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  background: var(--surface-container-low);
+  padding: var(--sp-3);
+  transition: all 0.2s ease;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-container);
+  background: var(--surface-container-lowest);
+}
+
+/* ─── Laboratorios pills y chips ─── */
+.pillsContainer {
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-3);
+  min-height: 52px;
+}
+
+.noLabsSelected {
+  font-size: 0.8125rem;
+  color: var(--outline);
+  font-style: italic;
+}
+
+.pillsSelected {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 12px;
+  background: var(--accent-container);
+  color: var(--on-accent-container);
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: 'Manrope', sans-serif;
+  border: 1px solid rgba(0, 140, 199, 0.15);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.pillRemove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--on-accent-container);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: bold;
+  line-height: 1;
+  transition: all 0.15s;
+  padding: 0;
+}
+
+.pillRemove:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+.availableSection {
+  margin-top: var(--sp-2);
+}
+
+.availableLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  display: block;
+  margin-bottom: var(--sp-2);
+}
+
+.labOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.labOption {
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: 'Manrope', sans-serif;
+  padding: 5px 12px;
+  border: 1.5px dashed var(--outline-variant);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.labOption:hover {
+  border-color: var(--accent);
+  background: var(--accent-container);
+  color: var(--on-accent-container);
+  border-style: solid;
+  transform: translateY(-1px);
+}
+
+.allSelected {
+  font-size: 0.75rem;
+  color: var(--success);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ─── Columna derecha: Tareas ─── */
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.tasksHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--outline-variant);
+  padding-bottom: var(--sp-2);
+}
+
+.tasksTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--on-surface-variant);
+}
+
+.taskCount {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--on-surface-variant);
+  background: var(--surface-container-high);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.taskList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: var(--sp-2);
+}
+
+/* Scrollbar personalizado delgado y elegante */
+.taskList::-webkit-scrollbar {
+  width: 5px;
+}
+
+.taskList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.taskList::-webkit-scrollbar-thumb {
+  background: var(--outline-variant);
+  border-radius: var(--radius-full);
+}
+
+.taskList::-webkit-scrollbar-thumb:hover {
+  background: var(--outline);
+}
+
+.taskRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.taskNumber {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--surface-container-high);
+  color: var(--on-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6875rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.taskInput {
+  flex: 1;
+  font-size: 0.875rem;
+  padding: 8px 12px;
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface-container-low);
+  transition: all 0.2s ease;
+}
+
+.taskInput:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface-container-lowest);
+}
+
+/* Input vacío al final */
+.taskInputEmpty {
+  background: var(--surface-container-low) !important;
+  font-style: italic;
+  color: var(--outline) !important;
+  border-style: dashed;
+}
+
+.taskDeleteBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--outline);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.taskDeleteBtn:hover {
+  background: rgba(186, 26, 26, 0.08);
+  color: var(--danger);
+}
+
+.taskDeleteHidden {
+  opacity: 0;
+  pointer-events: none;
+}

@@ -1,0 +1,417 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: overlayIn 0.2s ease-out;
+}
+
+.modal {
+  background: var(--surface-container-lowest);
+  padding: var(--sp-6);
+  border-radius: var(--radius-xl);
+  width: 620px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+  border: 1px solid var(--outline-variant);
+  animation: modalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--outline-variant);
+  padding-bottom: var(--sp-3);
+}
+
+.header h2 {
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--on-surface);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  cursor: pointer;
+  color: var(--on-surface-variant);
+  line-height: 1;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+
+.closeBtn:hover {
+  color: var(--danger);
+}
+
+.formGroup {
+  margin-bottom: var(--sp-4);
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: var(--sp-2);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface-container-low);
+  color: var(--on-surface);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  transition: all 0.2s ease;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-container);
+  background: var(--surface-container-lowest);
+}
+
+/* Grid de Filas / Columnas con Botones */
+.gridControls {
+  display: flex;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.controlGroup {
+  flex: 1;
+}
+
+.controlGroup label {
+  display: block;
+  margin-bottom: var(--sp-2);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.counterControl {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-container-low);
+}
+
+.counterControl button {
+  width: 40px;
+  height: 38px;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--on-surface);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  user-select: none;
+}
+
+.counterControl button:hover:not(:disabled) {
+  background: var(--surface-container-high);
+}
+
+.counterControl button:disabled {
+  color: var(--outline-variant);
+  cursor: not-allowed;
+}
+
+.counterControl input {
+  flex: 1;
+  width: 100%;
+  height: 38px;
+  border: none;
+  background: none;
+  text-align: center;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--on-surface);
+  font-family: inherit;
+  -moz-appearance: textfield;
+}
+
+.counterControl input::-webkit-outer-spin-button,
+.counterControl input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Selector de posición de puerta */
+.doorSelectorWrapper {
+  margin-bottom: var(--sp-4);
+}
+
+.doorLabel {
+  display: block;
+  margin-bottom: var(--sp-2);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.doorButtonGroup {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.doorBtn {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface-container-low);
+  color: var(--on-surface);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.doorBtn:hover {
+  background: var(--surface-container-high);
+}
+
+.activeDoor {
+  background: var(--accent);
+  color: var(--on-primary);
+  border-color: var(--accent);
+  box-shadow: 0 2px 6px rgba(0, 140, 199, 0.25);
+}
+
+/* Previsualización del Aula con Paredes */
+.roomPreview {
+  background: var(--surface-container-low);
+  border-radius: var(--radius-xl);
+  margin-top: var(--sp-4);
+  padding: var(--sp-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  border: 1px solid var(--outline-variant);
+  overflow: auto;
+}
+
+/* Simulación de las paredes del cuarto */
+.roomContainer {
+  position: relative;
+  background: var(--surface-container-lowest);
+  border: 4px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+/* Puerta Absoluta colocada en paredes */
+.doorWrapper {
+  position: absolute;
+  z-index: 10;
+  background: var(--surface-container-lowest); /* Tapa el borde grueso de la pared */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2px;
+}
+
+.doorTopStart {
+  top: -20px;
+  left: 15%;
+}
+
+.doorTopCenter {
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.doorTopEnd {
+  top: -20px;
+  right: 15%;
+}
+
+.doorRightStart {
+  right: -20px;
+  top: 15%;
+  transform: rotate(90deg);
+}
+
+.doorRightCenter {
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.doorRightEnd {
+  right: -20px;
+  bottom: 15%;
+  transform: rotate(90deg);
+}
+
+.doorBottomEnd {
+  bottom: -20px;
+  right: 15%;
+  transform: rotate(180deg);
+}
+
+.doorBottomCenter {
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+}
+
+.doorBottomStart {
+  bottom: -20px;
+  left: 15%;
+  transform: rotate(180deg);
+}
+
+.doorLeftEnd {
+  left: -20px;
+  bottom: 15%;
+  transform: rotate(-90deg);
+}
+
+.doorLeftCenter {
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+.doorLeftStart {
+  left: -20px;
+  top: 15%;
+  transform: rotate(-90deg);
+}
+
+
+/* Grilla de PCs y Pasillo */
+.roomGrid {
+  display: grid;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Monitores (PC Icon) */
+.pcIcon {
+  background: var(--surface-container-high);
+  color: var(--on-surface-variant);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  cursor: default;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.pcIcon:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--surface-container-highest);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+.monitorSvg {
+  color: inherit;
+}
+
+.pcNum {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--outline);
+  margin-top: 1px;
+}
+
+/* Espacio libre punteado (sin PC) */
+.emptySlot {
+  width: 44px;
+  height: 44px;
+  border: 1.5px dashed var(--outline-variant);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.pcNumSlot {
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--outline-variant);
+}
+
+/* Pasillo central */
+.aisleCell {
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+}
+
+.successMessage {
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--success);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  padding: var(--sp-3);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--sp-4);
+  text-align: center;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

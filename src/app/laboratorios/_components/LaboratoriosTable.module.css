@@ -6,6 +6,8 @@
 .btnShow:hover { background: var(--accent-container) !important; color: var(--on-accent-container); }
 .btnDelete { color: var(--on-surface-variant); }
 .btnDelete:hover { background: var(--danger-bg) !important; color: var(--danger-text); }
+.btnEdit { color: var(--accent); }
+.btnEdit:hover { background: var(--accent-container) !important; color: var(--on-accent-container); }
 .empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-3); padding: var(--sp-12); color: var(--on-surface-variant); text-align: center; }
 .empty p { font-size: 1rem; font-weight: 600; color: var(--on-surface); margin: 0; }
 .empty span { font-size: 0.875rem; color: var(--on-surface-variant); }

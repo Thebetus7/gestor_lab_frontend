@@ -157,6 +157,38 @@ export default function LoginPage() {
             >
               {loading ? 'Ingresando...' : 'Entrar'}
             </button>
+
+            <div style={{ marginTop: 'var(--sp-3)', textAlign: 'center' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setUsername('admin');
+                  setPassword('admin12345');
+                }}
+                style={{
+                  background: 'rgba(0, 102, 204, 0.05)',
+                  border: '1px dashed var(--primary)',
+                  color: 'var(--primary)',
+                  padding: '8px 16px',
+                  borderRadius: 'var(--radius-md)',
+                  cursor: 'pointer',
+                  fontSize: '0.875rem',
+                  fontWeight: 500,
+                  width: '100%',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Autocompletar Admin
+              </button>
+            </div>
           </form>
         </div>
       </div>

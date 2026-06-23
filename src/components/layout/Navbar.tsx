@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 import { fetchProfile } from '@/lib/api/auth';
+import { getActividades, type ActividadList, getIncidencias, type Incidencia } from '@/lib/api/laboratorio';
 import styles from './Navbar.module.css';
 
 interface UserProfile {
   username: string;
   email: string;
   rol?: string;
+  roles?: string[];
 }
 
 export default function Navbar() {
@@ -17,6 +19,8 @@ export default function Navbar() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [actividades, setActividades] = useState<ActividadList[]>([]);
+  const [incidencias, setIncidencias] = useState<Incidencia[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -45,13 +49,25 @@ export default function Navbar() {
         try {
           const userData = await fetchProfile(token);
           setProfile(userData);
+          
+          // Cargar actividades para la visualización del Navbar
+          const actData = await getActividades();
+          setActividades(actData);
+
+          // Cargar incidencias
+          const incData = await getIncidencias();
+          setIncidencias(incData);
         } catch (error) {
-          console.error("Error fetching profile:", error);
+          console.error("Error fetching profile, activities or incidents:", error);
           setProfile(null);
+          setActividades([]);
+          setIncidencias([]);
         }
       } else {
         setIsAuthenticated(false);
         setProfile(null);
+        setActividades([]);
+        setIncidencias([]);
       }
     };
 
@@ -64,6 +80,7 @@ export default function Navbar() {
     document.cookie = 'access_token=; path=/; max-age=0';
     setIsAuthenticated(false);
     setProfile(null);
+    setActividades([]);
     router.push('/welcome');
   };
 
@@ -113,18 +130,93 @@ export default function Navbar() {
             >
               Reservas
             </Link>
-            <Link 
-              href="/actividades" 
-              className={`${styles.navLink} ${pathname === '/actividades' ? styles.navLinkActive : ''}`}
-            >
-              Actividades
-            </Link>
-            <Link 
-              href="/incidencias" 
-              className={`${styles.navLink} ${pathname === '/incidencias' ? styles.navLinkActive : ''}`}
-            >
-              Incidencias
-            </Link>
+            <div className={styles.navLinkContainer}>
+              <Link 
+                href="/actividades" 
+                className={`${styles.navLink} ${pathname === '/actividades' ? styles.navLinkActive : ''}`}
+              >
+                Actividades
+                {actividades.length > 0 && (
+                  <span className={styles.badge}>{actividades.length}</span>
+                )}
+              </Link>
+              
+              {/* Popover de Actividades Recientes */}
+              {actividades.length > 0 && (
+                <div className={styles.activitiesPopover}>
+                  <div className={styles.popoverHeader}>Actividades Recientes</div>
+                  <div className={styles.popoverList}>
+                    {actividades.slice(0, 4).map((act) => (
+                      <div key={act.id} className={styles.popoverItem}>
+                        <div className={styles.popoverIcon}>📄</div>
+                        <div className={styles.popoverContent}>
+                          <div className={styles.popoverTitle}>Actividad #{act.id}</div>
+                          <div className={styles.popoverDesc}>
+                            {act.descripcion || 'Sin descripción detallada registrada'}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <Link href="/actividades" className={styles.popoverFooter}>
+                    Ver todas las actividades →
+                  </Link>
+                </div>
+              )}
+            </div>
+            <div className={styles.navLinkContainer}>
+              <Link 
+                href="/incidencias" 
+                className={`${styles.navLink} ${pathname === '/incidencias' ? styles.navLinkActive : ''}`}
+              >
+                Incidencias
+                {incidencias.filter(inc => !inc.resuelto).length > 0 && (
+                  <span className={`${styles.badge} ${styles.badgeDanger}`}>
+                    {incidencias.filter(inc => !inc.resuelto).length}
+                  </span>
+                )}
+              </Link>
+              
+              {/* Popover de Incidencias Recientes */}
+              {incidencias.filter(inc => !inc.resuelto).length > 0 && (
+                <div className={styles.activitiesPopover}>
+                  <div className={`${styles.popoverHeader} ${styles.popoverHeaderDanger}`}>
+                    Incidencias Activas
+                  </div>
+                  <div className={styles.popoverList}>
+                    {incidencias.filter(inc => !inc.resuelto).slice(0, 4).map((inc) => (
+                      <div key={inc.id} className={styles.popoverItem}>
+                        <div className={styles.popoverIcon}>⚠️</div>
+                        <div className={styles.popoverContent}>
+                          <div className={styles.popoverTitle}>
+                            Incidencia #{inc.id} ({inc.prioridad?.toUpperCase()})
+                          </div>
+                          <div className={styles.popoverDesc}>
+                            {inc.descripcion || 'Sin descripción detallada registrada'}
+                          </div>
+                          {inc.nombre_lab && (
+                            <div style={{ fontSize: '0.6875rem', marginTop: '2px', opacity: 0.8, color: 'var(--on-surface-variant)' }}>
+                              📍 {inc.nombre_lab}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <Link href="/incidencias" className={styles.popoverFooter}>
+                    Ver todas las incidencias →
+                  </Link>
+                </div>
+              )}
+            </div>
+            {profile?.roles?.includes('admin') && (
+              <Link 
+                href="/usuarios" 
+                className={`${styles.navLink} ${pathname === '/usuarios' ? styles.navLinkActive : ''}`}
+              >
+                Usuarios
+              </Link>
+            )}
           </>
         ) : (
           <div style={{ visibility: 'hidden' }}>Spacer</div>
@@ -163,7 +255,7 @@ export default function Navbar() {
               <div className={styles.dropdown}>
                 <div className={styles.dropdownHeader}>
                   <div className={styles.dropdownName}>{profile?.username}</div>
-                  <div className={styles.dropdownRole}>{profile?.rol || 'Usuario'}</div>
+                  <div className={styles.dropdownRole}>{profile?.roles?.join(', ') || profile?.rol || 'Usuario'}</div>
                 </div>
                 
                 <Link href="/profile" className={styles.dropdownItem}>
