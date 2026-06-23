@@ -2,6 +2,9 @@
 
 import Link from 'next/link';
 
+const APP_DOWNLOAD_URL =
+  'https://drive.google.com/drive/folders/1WF5a2QxjB4F2zL9Kg7_lzV-XP02DOEBG?usp=sharing';
+
 export default function WelcomePage() {
   return (
     <div style={{ 
@@ -98,8 +101,12 @@ export default function WelcomePage() {
               }}>
                 Comenzar Ahora
               </Link>
-              {/* Botón de descarga de App */}
-              <button className="btn" style={{ 
+              <a
+                href={APP_DOWNLOAD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn"
+                style={{ 
                 padding: 'var(--sp-3) var(--sp-8)', 
                 fontSize: '1.125rem', 
                 display: 'flex', 
@@ -110,7 +117,8 @@ export default function WelcomePage() {
                 color: 'var(--text-primary)',
                 backdropFilter: 'blur(10px)',
                 borderRadius: 'var(--radius-xl)',
-                boxShadow: 'var(--shadow-sm)'
+                boxShadow: 'var(--shadow-sm)',
+                textDecoration: 'none'
               }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -118,7 +126,7 @@ export default function WelcomePage() {
                   <line x1="12" y1="15" x2="12" y2="3"></line>
                 </svg>
                 Descargar App
-              </button>
+              </a>
             </div>
           </div>
 
@@ -242,12 +250,21 @@ export default function WelcomePage() {
                   background: 'var(--surface-container-high)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   marginBottom: 'var(--sp-4)', fontSize: '2.5rem', color: 'var(--text-muted)',
-                  boxShadow: 'var(--shadow-sm)'
+                  boxShadow: 'var(--shadow-sm)',
+                  overflow: 'hidden'
                 }}>
-                  🧑‍💻
+                  {dev.image ? (
+                    <img
+                      src={dev.image}
+                      alt={dev.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <span>🧑‍💻</span>
+                  )}
                 </div>
-                <h3 style={{ fontSize: '1.125rem' }}>{dev.name}</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>{dev.role}</p>
+                <h3 style={{ fontSize: '1.125rem', maxWidth: '220px' }}>{dev.name}</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>{dev.id}</p>
               </div>
             ))}
           </div>
@@ -302,7 +319,14 @@ const features = [
 ];
 
 const developers = [
-  { name: '[Nombre Apellidos 1]', role: 'Desarrollador Full Stack' },
-  { name: '[Nombre Apellidos 2]', role: 'Desarrollador Full Stack' },
-  { name: '[Nombre Apellidos 3]', role: 'Desarrollador Full Stack' },
+  {
+    name: 'YBANERA HERRERA EDBERTO',
+    id: '219059829',
+    image: '/team/edberto-ybanera.png',
+  },
+  {
+    name: 'JARPA MUÑOZ JUAN NOE',
+    id: '219068887',
+    image: null,
+  },
 ];
