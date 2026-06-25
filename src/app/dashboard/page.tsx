@@ -201,9 +201,7 @@ export default function DashboardPage() {
   const kpiBlocks = [
     { title: 'Asistencias', value: datos.totalAsistencias.toString(), change: '↑ 12%', subtitle: 'vs anterior' },
     { title: 'Actividades', value: datos.totalActividades.toString(), change: '↑ 3', subtitle: 'vs anterior' },
-    { title: 'Tiempo de Respuesta', value: datos.tiempoResp, change: '↓ 3 min', subtitle: 'vs anterior' },
     { title: 'Reportes (Semana)', value: datos.reportesPCs.toString(), change: '↓ 2', subtitle: 'vs anterior' },
-    { title: 'Satisfacción (NPS)', value: `${datos.tasaResolucion}%`, change: datos.tasaResolucionVariacion, subtitle: 'vs anterior' },
     { title: 'PCs Totales', value: datos.pcsTotales.toString(), change: '↑ 1.5%', subtitle: 'vs anterior' }
   ];
 
@@ -568,33 +566,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Ingresos Trimestrales / Presupuesto (Imagen 1 - Derecha - Reactivos) */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-4)' }}>
-          <p style={{ fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.9375rem', borderBottom: '2px solid #5c93e2', paddingBottom: 6 }}>
-            PRESUPUESTO / GASTOS TRIMESTRALES
-          </p>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '8px 0' }}>
-            {datos.trimestrales.map((item, idx) => (
-              <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.6875rem', fontWeight: 700 }}>
-                  <span>{item.label}</span>
-                  <span>${item.valor.toLocaleString()} USD</span>
-                </div>
-                <div style={{ width: '100%', height: 18, background: 'var(--surface-container-high)', borderRadius: 2, overflow: 'hidden' }}>
-                  <div style={{ width: `${(item.valor / datos.maxTrimValue) * 100}%`, height: '100%', background: item.color, transition: 'width 0.4s ease' }} />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.625rem', color: 'var(--text-muted)', fontWeight: 600, paddingLeft: 90 }}>
-            <span>$0</span>
-            <span>$50k</span>
-            <span>$100k</span>
-            <span>$200k</span>
-          </div>
-        </div>
+       
       </div>
 
       {/* --- FILA 4: TABLA DE DATOS DEL PANEL (Imagen 1 - Bottom - Reactiva) --- */}
@@ -632,28 +604,7 @@ export default function DashboardPage() {
           </table>
         </div>
 
-        {/* Tabla Presupuesto */}
-        <div className="card" style={{ padding: 'var(--sp-4)' }}>
-          <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: 8 }}>
-            PRESUPUESTO GENERAL
-          </p>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.75rem', textAlign: 'center' }}>
-            <thead>
-              <tr>
-                <th style={{ background: '#4fc3f7', padding: '6px 4px', fontWeight: 700, border: '1px solid var(--border)', color: 'var(--white)' }}>PROYECTADO</th>
-                <th style={{ background: '#8bc34a', padding: '6px 4px', fontWeight: 700, border: '1px solid var(--border)', color: 'var(--white)' }}>REAL</th>
-                <th style={{ background: '#b0bec5', padding: '6px 4px', fontWeight: 700, border: '1px solid var(--border)' }}>RESTO</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style={{ padding: 10, border: '1px solid var(--border)', fontWeight: 700, transition: 'all 0.3s' }}>${datos.presProyectado.toLocaleString()}</td>
-                <td style={{ padding: 10, border: '1px solid var(--border)', fontWeight: 700, transition: 'all 0.3s' }}>${datos.presReal.toLocaleString()}</td>
-                <td style={{ padding: 10, border: '1px solid var(--border)', fontWeight: 700, transition: 'all 0.3s' }}>${datos.presResto.toLocaleString()}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+  
 
         {/* Tabla Riesgos */}
         <div className="card" style={{ padding: 'var(--sp-4)' }}>
