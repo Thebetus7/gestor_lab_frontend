@@ -80,19 +80,19 @@ export default function DashboardPage() {
       ? baseReportesSem 
       : Math.round(baseReportesSem * mult * 0.75);
 
-    // Datos del gráfico de barras apiladas (aula vs soporte)
+    // Datos del gráfico de barras apiladas (puntual vs retraso)
     const barrasSemanales = [
-      { dia: 'Lun', aula: Math.round(18 * (totalAsistencias / 142) + 2), soporte: Math.round(10 * (totalAsistencias / 142) + 1) },
-      { dia: 'Mar', aula: Math.round(25 * (totalAsistencias / 142) + 4), soporte: Math.round(12 * (totalAsistencias / 142) + 2) },
-      { dia: 'Mié', aula: Math.round(28 * (totalAsistencias / 142) + 3), soporte: Math.round(15 * (totalAsistencias / 142) + 3) },
-      { dia: 'Jue', aula: Math.round(15 * (totalAsistencias / 142) + 1), soporte: Math.round(8 * (totalAsistencias / 142) + 1) },
-      { dia: 'Vie', aula: Math.round(22 * (totalAsistencias / 142) + 2), soporte: Math.round(18 * (totalAsistencias / 142) + 2) },
-      { dia: 'Sáb', aula: Math.round(15 * (totalAsistencias / 142) + 1), soporte: Math.round(8 * (totalAsistencias / 142) + 1) },
-      { dia: 'Dom', aula: Math.round(5 * (totalAsistencias / 142) + 0.5), soporte: Math.round(2 * (totalAsistencias / 142) + 0.5) }
+      { dia: 'Lun', punctual: Math.round(18 * (totalAsistencias / 142) + 2), retraso: Math.round(3 * (totalAsistencias / 142) + 0.5) },
+      { dia: 'Mar', punctual: Math.round(25 * (totalAsistencias / 142) + 4), retraso: Math.round(2 * (totalAsistencias / 142) + 0.5) },
+      { dia: 'Mié', punctual: Math.round(28 * (totalAsistencias / 142) + 3), retraso: Math.round(5 * (totalAsistencias / 142) + 1) },
+      { dia: 'Jue', punctual: Math.round(15 * (totalAsistencias / 142) + 1), retraso: Math.round(1 * (totalAsistencias / 142)) },
+      { dia: 'Vie', punctual: Math.round(22 * (totalAsistencias / 142) + 2), retraso: Math.round(4 * (totalAsistencias / 142) + 0.5) },
+      { dia: 'Sáb', punctual: Math.round(15 * (totalAsistencias / 142) + 1), retraso: Math.round(2 * (totalAsistencias / 142)) },
+      { dia: 'Dom', punctual: Math.round(5 * (totalAsistencias / 142) + 0.5), retraso: Math.round(0) }
     ];
 
     // Encontrar el valor máximo para normalizar la escala de las barras semanales
-    const maxBarValue = Math.max(...barrasSemanales.map(b => b.aula + b.soporte), 1);
+    const maxBarValue = Math.max(...barrasSemanales.map(b => b.punctual + b.retraso), 1);
 
     // Curva spline SVG dinámica dependiente del Lab seleccionado
     let pathD = "M 0 130 C 50 140, 100 80, 150 100 C 200 120, 250 50, 300 70 C 350 90, 400 140, 450 110 L 500 60";
@@ -284,20 +284,20 @@ export default function DashboardPage() {
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-4)' }}>
           <div>
             <p style={{ fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.9375rem', color: 'var(--on-surface)' }}>
-              Asistencias de Soporte vs Aulas ({filtroPeriodo === 'This Week' ? 'Semana' : filtroPeriodo === 'This Month' ? 'Mes' : 'Semestre'})
+              Puntualidad de Asistencias ({filtroPeriodo === 'This Week' ? 'Semana' : filtroPeriodo === 'This Month' ? 'Mes' : 'Semestre'})
             </p>
             <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-              Carga horaria acumulada por semana (horas)
+              Registros de entradas a tiempo vs tardanzas de auxiliares
             </span>
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', height: 180, gap: 'var(--sp-3)', paddingBottom: 'var(--sp-2)' }}>
             {datos.barrasSemanales.map((item, idx) => {
-              const total = item.aula + item.soporte;
+              const total = item.punctual + item.retraso;
               // Altura en base al valor máximo dinámico calculado
               const totalHeightPct = (total / datos.maxBarValue) * 100;
-              const aulaPct = (item.aula / total) * 100;
-              const sopPct = (item.soporte / total) * 100;
+              const punctualPct = (item.punctual / total) * 100;
+              const retrasoPct = (item.retraso / total) * 100;
 
               return (
                 <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, flex: 1 }}>
@@ -321,19 +321,19 @@ export default function DashboardPage() {
                       flexDirection: 'column-reverse',
                       transition: 'height 0.4s ease'
                     }}>
-                      {/* Segmento 1: Aula (Azul) */}
+                      {/* Segmento 1: A tiempo (Azul) */}
                       <div style={{
-                        height: `${aulaPct}%`,
+                        height: `${punctualPct}%`,
                         width: '100%',
                         background: '#5c93e2',
-                      }} title={`Aulas: ${item.aula}`} />
+                      }} title={`A tiempo: ${item.punctual}`} />
 
-                      {/* Segmento 2: Soporte (Morado) */}
+                      {/* Segmento 2: Tardanza (Naranja) */}
                       <div style={{
-                        height: `${sopPct}%`,
+                        height: `${retrasoPct}%`,
                         width: '100%',
-                        background: '#9b6b9d',
-                      }} title={`Soporte: ${item.soporte}`} />
+                        background: '#ffb74d',
+                      }} title={`Tardanzas: ${item.retraso}`} />
                     </div>
                   </div>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{item.dia}</span>
@@ -345,11 +345,11 @@ export default function DashboardPage() {
           <div style={{ display: 'flex', gap: 'var(--sp-4)', fontSize: '0.75rem', fontWeight: 600 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <div style={{ width: 12, height: 12, borderRadius: 2, background: '#5c93e2' }} />
-              <span>Asistencias de Aula</span>
+              <span>A Tiempo (Puntual)</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <div style={{ width: 12, height: 12, borderRadius: 2, background: '#9b6b9d' }} />
-              <span>Soporte Especializado</span>
+              <div style={{ width: 12, height: 12, borderRadius: 2, background: '#ffb74d' }} />
+              <span>Tardanza (Retraso)</span>
             </div>
           </div>
         </div>
